@@ -1,9 +1,8 @@
 package com.example.implicitintent
 
-import android.Manifest
+
 import android.content.ContentResolver
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -18,7 +17,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import java.net.URI
 
 class MainActivity : AppCompatActivity() {
 
@@ -111,11 +109,13 @@ class MainActivity : AppCompatActivity() {
         startActivity(sendIntent)
     }
 
-    fun openMail(){
-        val mailIntent = Intent(Intent.ACTION_SEND)
-        mailIntent.putExtra(Intent.EXTRA_TEXT, "Hej från Gurkan")
-        intent.type = "message/rfc822"
-        startActivity(mailIntent)
+    fun openMail() {
+        val mailIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "message/rfc822"
+            putExtra(Intent.EXTRA_TEXT, "Hej från Gurkan")
+        }
+        val chooser = Intent.createChooser(mailIntent, "Välj en mail-klient")
+        startActivity(chooser)
     }
 
     private fun checkCameraPermission(){
@@ -131,6 +131,4 @@ class MainActivity : AppCompatActivity() {
         }
         return contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)!!
     }
-
-
 }
